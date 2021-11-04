@@ -1,19 +1,22 @@
-from operator import attrgetter
 import random
+from operator import attrgetter
+
+from model.participant import Participant
+from model.ronde import Ronde
+from vues.base import Vues
 
 
 class Tournoi:
 
-    def __init__(self, nom_tournoi, lieu, date, typejeu, description, all_participant=[],  nb_rounds=4):
+    def __init__(self, nom_tournoi, lieu, date, typejeu, description, all_participant=[], rondes=[], nb_rounds=4):
         self.nom_tournoi = nom_tournoi
         self.lieu = lieu
         self.date = date
         self.nb_rounds = nb_rounds
         self.all_participant = all_participant
         self.typejeu = typejeu
-        self.rondes = []
+        self.rondes = rondes
         self.description = description
-        self.generer_premier_tour()
 
     def prochaine_ronde(self):
         return len(self.rondes) + 1
@@ -21,18 +24,22 @@ class Tournoi:
     def __str__(self):
         return str(self.nom_tournoi) + ' ' + str(self.lieu) + ' ' + str(self.date) + ' '\
                + str(self.typejeu) + ' ' + str(self.description) + ' ' + str(self.all_participant)\
-               + ' ' + str(self.nb_rounds)
+               + ' ' + str(self.nb_rounds) + ' ' + str(self.rondes)
 
     def __repr__(self):
         return str(self)
 
-    def classement_elo(self):
+    def classement_elo(self) -> list:
         result = sorted(self.all_participant, key=lambda x: x.joueur.elo, reverse=True)
         return result
 
     def classement_score_elo(self):
         result = sorted(self.all_participant, key=attrgetter('score', 'joueur.elo'), reverse=True)
         return result
+
+    def list_ronde(self):
+        list_rondes = self.rondes
+        return list_rondes
 
     def modified_rang(self, new_rang, last_rang):
         new_rang -= 1
@@ -41,7 +48,8 @@ class Tournoi:
         rang_participant = self.classement_score_elo()[last_rang]
         result.remove(rang_participant)
         result.insert(new_rang, rang_participant)
-        return result
+        vues = Vues()
+        vues.affiche_classement(result)
 
     def valid_pair(self, paire):
         for ronde in self.rondes:
@@ -59,9 +67,9 @@ class Tournoi:
         trie_first_tour = list(zip(list_inf, list_sup))
 
         set_match = [set(p) for p in trie_first_tour]
+        vues = Vues()
+        ronde = Ronde("Ronde " + str(self.prochaine_ronde()), set_match, vues.debut_round(Ronde.date_heure()))
 
-        ronde = Ronde("Ronde " + str(self.prochaine_ronde()), set_match, print("Début de la Ronde le "
-                                                                               + Ronde.date_heure()))
         self.rondes.append(ronde)
         self.resultat_match()
 
@@ -81,8 +89,8 @@ class Tournoi:
             joueurs.remove(j2)
             set_match.append({j1, j2})
 
-        ronde = Ronde("Ronde " + str(self.prochaine_ronde()), set_match, print("Début de la Ronde le "
-                                                                               + Ronde.date_heure()))
+        vues = Vues()
+        ronde = Ronde("Ronde " + str(self.prochaine_ronde()), set_match, vues.debut_round(Ronde.date_heure()))
         self.rondes.append(ronde)
         self.resultat_match()
 
@@ -91,7 +99,6 @@ class Tournoi:
         print(ronde.nom)
         for m in ronde.matchs:
             paire = list(m)
-
             x = random.choice([True, False])
             if x is True:
                 color0 = "blanc"
@@ -100,9 +107,10 @@ class Tournoi:
                 color0 = "noir"
                 color1 = "blanc"
 
-            print("Match oppposant " + str(paire[0]) + " couleur : " + str(color0) + " et "
-                  + str(paire[1]) + " couleur : " + str(color1))
-            resultat = float(input("tapez 1 si " + str(paire[0]) + " a gagné, 0 s'il a perdu, 0.5 si égalité "))
+            vues = Vues()
+            vues.affiche_match(paire, color0, color1)
+            resultat = vues.affiche_gagner(paire[0])
+
             if resultat == 1:
                 paire[0].win()
                 paire[1].lose()
@@ -114,25 +122,64 @@ class Tournoi:
                 paire[1].draw()
 
         if self.prochaine_ronde() <= self.nb_rounds:
-            terminer = input("Avez vous terminé le round ? : tapez oui pour continuer ")
-            if terminer == str("oui"):
+            terminer_round = Vues.terminer_round()
+            if terminer_round == str("oui"):
                 ronde.date_fin = Ronde.date_heure()
-                print("Fin de la  Ronde le ", ronde.date_fin)
-                self.generer_ronde()
+                vues = Vues()
+                vues.fin_round(ronde.date_fin)
+                self.modification_classement()
 
         else:
             ronde.date_fin = Ronde.date_heure()
-            print("Fin de la  Ronde le ", ronde.date_fin)
-            print("FIN DU TOURNOI, voici le classement final")
-            for count, value in enumerate(self.classement_score_elo(), start=1):
-                print("Rang", count, value, " - points :", value.score)
-            print("voulez vous modifier le classements des joueurs")
-            reponse = str(input("tapez oui pour le modifier : "))
-            if reponse == str("oui"):
-                joueur_modif = int(input("indiquez le rang du joueur à modifier : "))
-                new_rang = int(input("indiquez le nouveau rang du joueur : "))
-                print("voici le nouveau classement : ")
-                print(self.modified_rang(new_rang, joueur_modif))
+            vues = Vues()
+            vues.fin_round(ronde.date_fin)
+            Vues.fin_tournoi()
+            vues.affiche_classement(self.classement_score_elo())
+            self.modification_classement()
+
+    def modification_classement(self):
+        reponse = Vues.modification_classement()
+        if reponse == str("oui"):
+            vues = Vues()
+            vues.affiche_classement(self.classement_score_elo())
+            modification_classement = vues.modification_classement_joueur()
+            self.modified_rang(modification_classement[1], modification_classement[0])
+
+    def serialize_tour(self) -> dict:
+        serialized_tournoi = {
+            'nom_tournoi': self.nom_tournoi,
+            'lieu': self.lieu,
+            'date': self.date,
+            'typejeu': self.typejeu,
+            'description': self.description,
+            'nb_round': self.nb_rounds,
+            'all_participants': [p.serialize() for p in self.all_participant],
+            'rondes': [r.serialize_ronde() for r in self.rondes]
+        }
+        return serialized_tournoi
+
+    @classmethod
+    def deserialize_tour(cls, serialized):
+        return Tournoi(
+            nom_tournoi=serialized.get("nom_tournoi"),
+            lieu=serialized.get("lieu"),
+            date=serialized.get("date"),
+            typejeu=serialized.get("typejeu"),
+            description=serialized.get("description"),
+            nb_rounds=serialized.get("nb_round"),
+            rondes=[Ronde.deserialize(ronde) for ronde in serialized.get("rondes")],
+            all_participant=[Participant.deserialize(p) for p in serialized.get("all_participants")]
+        )
+
+    @classmethod
+    def classement_ordre_alpha_joueur(cls, deserialize):
+        result = sorted(deserialize, key=lambda x: x.joueur.prenom.lower())
+        return result
+
+    @classmethod
+    def classement_rank_elo(cls, deserialize):
+        result = sorted(deserialize, key=attrgetter('score', 'joueur.elo'), reverse=True)
+        return result
 
 
 if __name__ == '__main__':

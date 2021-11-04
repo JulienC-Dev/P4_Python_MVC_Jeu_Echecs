@@ -1,10 +1,9 @@
-from model import *
-from vues import Vues
-# from controller import Controller
+from controller.base import Controller
+
 
 def main():
-    vues = Vues()
-    # controller = Controller()
+    Controller.run()
+
 
 if __name__ == '__main__':
     main()
