@@ -17,6 +17,10 @@ class Vues:
         return joueur_modif, new_rang
 
     @classmethod
+    def affiche_rond(cls, match0, match1):
+        return print("Match - ", match0, "VS", match1)
+
+    @classmethod
     def nom_tournoi(cls):
         return input("Entrez le nom du tournoi : ").strip()
 
@@ -110,8 +114,7 @@ class Vues:
     @classmethod
     def retour_menu(cls):
         return float(input("Tapez 1, si vous souhaitez revenir à la liste des rapports \n"
-                           "Tapez 2, pour reprendre la partie : "
-                           ))
+                           "Tapez 2, pour reprendre la partie : "))
 
     @classmethod
     def rapport_menu(cls):
@@ -128,6 +131,15 @@ class Vues:
     @classmethod
     def choix_tournoi(cls):
         return int(input("Veuillez choisir le numéro du tournoi : "))
+
+    @classmethod
+    def affiche_console(cls, affiche):
+        return print(affiche)
+
+    @classmethod
+    def erreur_rapport(cls):
+        return print("Opps, pas de classement encore disponible \n"
+                      "retour au Menu Principal")
 
 
 if __name__ == '__main__':

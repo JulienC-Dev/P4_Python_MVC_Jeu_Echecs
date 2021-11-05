@@ -89,7 +89,7 @@ class Controller:
         db = TinyDB('db.json')
         tournois = db.table("tournoi").all()
         df = pd.DataFrame(tournois).drop(["all_participants", "rondes"], axis=1)
-        print(df)
+        Vues.affiche_console(df)
         selection_tournoi = Vues.choix_tournoi()
         data_frame = pd.DataFrame(tournois)
         players = data_frame["all_participants"][selection_tournoi]
@@ -97,14 +97,14 @@ class Controller:
         for deserializ in players:
             deserialize_players = Participant.deserialize(deserializ)
             list_player.append(deserialize_players)
-        print(Vues.rapport_ord_joueur(Tournoi.classement_ordre_alpha_joueur(list_player)))
+        Vues.affiche_console(Vues.rapport_ord_joueur(Tournoi.classement_ordre_alpha_joueur(list_player)))
 
     @classmethod
     def affiche_classement_joueurs(cls):
         db = TinyDB('db.json')
         tournois = db.table("tournoi").all()
         df = pd.DataFrame(tournois).drop(["all_participants", "rondes"], axis=1)
-        print(df)
+        Vues.affiche_console(df)
         selection_tournoi = Vues.choix_tournoi()
         data_frame = pd.DataFrame(tournois)
         players = data_frame["all_participants"][selection_tournoi]
@@ -112,29 +112,29 @@ class Controller:
         for deserializ in players:
             deserialize_players = Participant.deserialize(deserializ)
             list_player.append(deserialize_players)
-        print(Vues.rapport_ord_joueur(Tournoi.classement_rank_elo(list_player)))
+        Vues.affiche_console(Vues.rapport_ord_joueur(Tournoi.classement_rank_elo(list_player)))
 
     @classmethod
     def affiche_rondes(cls):
         db = TinyDB('db.json')
         tournois = db.table("tournoi").all()
         df = pd.DataFrame(tournois).drop(["all_participants", "rondes"], axis=1)
-        print(df)
+        Vues.affiche_console(df)
         selection_tournoi = Vues.choix_tournoi()
         data_frame = pd.DataFrame(tournois)
         rondes = data_frame["rondes"][selection_tournoi]
         for ronde in rondes:
             deserializ = Ronde.deserialize(ronde)
-            print(deserializ.nom)
+            Vues.affiche_console(deserializ.nom)
             for i in deserializ.matchs:
-                print("Match - ", list(i)[0], "VS", list(i)[1])
+                Vues.affiche_rond(list(i)[0], list(i)[1])
 
     @classmethod
     def affiche_tournoi(cls):
         db = TinyDB('db.json')
         tournois = db.table("tournoi").all()
         df = pd.DataFrame(tournois).drop(["all_participants", "rondes"], axis=1)
-        print(df)
+        Vues.affiche_console(df)
 
     @classmethod
     def menu_rapports(cls):
@@ -142,27 +142,23 @@ class Controller:
         if resultat == 1:
             try:
                 cls.affiche_tournoi()
-            except AttributeError as e:
-                print("Opps, pas de classement encore disponible \n"
-                      "retour au Menu Principal")
+            except KeyError as e:
+                Vues.affiche_console(Vues.erreur_rapport())
         elif resultat == 2:
             try:
                 cls.affiche_rondes()
-            except UnboundLocalError:
-                print("Opps, pas de classement encore disponible \n"
-                      "retour au Menu Principal")
+            except KeyError as e:
+                Vues.affiche_console(Vues.erreur_rapport())
         elif resultat == 3:
             try:
                 cls.affiche_classement_aphab_joueurs()
-            except UnboundLocalError:
-                print("Opps, pas de classement encore disponible \n"
-                      "retour au Menu Principal")
+            except KeyError as e:
+                Vues.affiche_console(Vues.erreur_rapport())
         elif resultat == 4:
             try:
                 cls.affiche_classement_joueurs()
-            except UnboundLocalError:
-                print("Opps, pas de classement encore disponible \n"
-                      "retour au Menu Principal")
+            except KeyError as e:
+                Vues.affiche_console(Vues.erreur_rapport())
 
 
 if __name__ == '__main__':
