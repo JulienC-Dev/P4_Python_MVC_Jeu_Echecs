@@ -26,8 +26,7 @@ class Joueur:
             prenom=serialized.get("prenom"),
             date_naissance=serialized.get("date_naissance"),
             sexe=serialized.get("sexe"),
-            elo=serialized.get("elo")
-        )
+            elo=serialized.get("elo"))
 
 
 if __name__ == '__main__':

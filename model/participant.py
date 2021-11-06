@@ -34,8 +34,7 @@ class Participant:
             date_naissance=serialized.get("joueur").get("date_naissance"),
             sexe=serialized.get("joueur").get("sexe"),
             elo=serialized.get("joueur").get("elo"),
-            score=serialized.get("score")
-        )
+            score=serialized.get("score"))
 
 
 if __name__ == '__main__':

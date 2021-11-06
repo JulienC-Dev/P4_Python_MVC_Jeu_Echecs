@@ -37,8 +37,7 @@ class Ronde:
             nom=serialized.get("nom"),
             matchs=[{Participant.deserialize(m[0]), Participant.deserialize(m[1])} for m in serialized.get("matchs")],
             date_debut=serialized.get("date_debut"),
-            date_fin=serialized.get("date_fin")
-        )
+            date_fin=serialized.get("date_fin"))
 
 
 if __name__ == '__main__':

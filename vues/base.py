@@ -139,7 +139,7 @@ class Vues:
     @classmethod
     def erreur_rapport(cls):
         return print("Opps, pas de classement encore disponible \n"
-                      "retour au Menu Principal")
+                     "retour au Menu Principal")
 
 
 if __name__ == '__main__':

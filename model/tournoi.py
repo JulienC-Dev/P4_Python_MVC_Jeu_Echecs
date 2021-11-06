@@ -1,6 +1,5 @@
 import random
 from operator import attrgetter
-
 from model.participant import Participant
 from model.ronde import Ronde
 from vues.base import Vues
