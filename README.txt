@@ -17,7 +17,7 @@ Le programme automatise la gestion des matchs en fonction de différents critèr
 - installer les packets nécessaires via la commande - pip install -r /projets/requirements.txt
 
 
-1.1 - Gestion des rapport flake8
+1.1 - Gestion des rapports flake8
 
 Permet un code propre et maintenable
 
