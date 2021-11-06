@@ -12,32 +12,17 @@ class Controller:
     def run(cls):
         menu_tournoi = Vues.menu_principal()
         if menu_tournoi == 1:
-
-            # nom_tournoi = Vues.nom_tournoi()
-            # lieu = Vues.lieu()
-            # date = Vues.date()
-            # typejeu = Vues.typejeu()
-            # description = Vues.description()
-            #
-            # nb_rounds = Vues.nb_rounds()
-            # noms = Vues.noms()
-            # prenom = Vues.prenom()
-            # date_naissances = Vues.date_naissances()
-            # sexes = Vues.sexes()
-            # elos = Vues.elos()
-
-            nom_tournoi = "test tournoi"
-            lieu = "paris"
-            date = "2020"
-            typejeu = "bullet"
-            description = "pas de remarque"
-
-            nb_rounds = "4"
-            noms = ["cormier", "dupont", "kes", "plazy", "raton", "haton", "rebel", "Stel"]
-            prenom = "julien,jessica,hervé,alice,pierre,jacques,c3PO,vador".split(",")
-            date_naissances = "10/12/90,21/03/76,30/12/21,23/01/94,24/05/10,20/03/13,30/01/01,01/01/98".split(',')
-            sexes = "masculin, feminin, masculin, masculin, masculin, masculin, masculin, masculin".split(',')
-            elos = "1, 42, 5, 22, 40, 10, 100, 150".split(',')
+            nom_tournoi = Vues.nom_tournoi()
+            lieu = Vues.lieu()
+            date = Vues.date()
+            typejeu = Vues.typejeu()
+            description = Vues.description()
+            nb_rounds = Vues.nb_rounds()
+            noms = Vues.noms()
+            prenom = Vues.prenom()
+            date_naissances = Vues.date_naissances()
+            sexes = Vues.sexes()
+            elos = Vues.elos()
 
             participants1 = Participant(noms[0], prenom[0], date_naissances[0], sexes[0], elos[0])
             participants2 = Participant(noms[1], prenom[1], date_naissances[1], sexes[1], elos[1])
@@ -63,7 +48,6 @@ class Controller:
             Controller.next_round()
             Controller.next_round()
             Controller.next_round()
-
             tournoi_table = db.table("tournoi")
             serialized_tournoi = tournoi.serialize_tour()
             tournoi_table.insert(serialized_tournoi)
