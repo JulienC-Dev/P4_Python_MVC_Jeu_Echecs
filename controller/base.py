@@ -1,3 +1,4 @@
+from model.joueur import Joueur
 from model.ronde import Ronde
 from model.tournoi import Tournoi
 from model.participant import Participant
@@ -12,17 +13,17 @@ class Controller:
     def run(cls):
         menu_tournoi = Vues.menu_principal()
         if menu_tournoi == 1:
-            nom_tournoi = Vues.nom_tournoi()
-            lieu = Vues.lieu()
-            date = Vues.date()
-            typejeu = Vues.typejeu()
-            description = Vues.description()
-            nb_rounds = Vues.nb_rounds()
-            noms = Vues.noms()
-            prenom = Vues.prenom()
-            date_naissances = Vues.date_naissances()
-            sexes = Vues.sexes()
-            elos = Vues.elos()
+            nom_tournoi = "test"
+            lieu = "paris"
+            date = "2020"
+            typejeu = "bullet"
+            description = "pas de remarque"
+            nb_rounds = "4"
+            noms = "cormier,pernia,stell,valgu,mitel,al,mars,mechant".split(",")
+            prenom = "julien,jessica,hervé,alice,pierre,jacques,c3PO,vador".split(",")
+            date_naissances = "2020,1009,2002,1990,2020,2020,2023,2101".split(",")
+            sexes = "masculin,feminin,masculin,masculin,masculin,masculin,masculin,masculin".split(",")
+            elos = "1,42,5,22,40,10,100,150".split(",")
 
             participants1 = Participant(noms[0], prenom[0], date_naissances[0], sexes[0], elos[0])
             participants2 = Participant(noms[1], prenom[1], date_naissances[1], sexes[1], elos[1])
@@ -34,8 +35,7 @@ class Controller:
             participants8 = Participant(noms[7], prenom[7], date_naissances[7], sexes[7], elos[7])
 
             all_participant = [participants1, participants2, participants3, participants4, participants5,
-                               participants6,
-                               participants7, participants8]
+                               participants6, participants7, participants8]
 
             serialized_players = [p.serialize() for p in all_participant]
             db = TinyDB('db.json')
@@ -54,9 +54,31 @@ class Controller:
             Controller.menu_rapports()
             Controller.run()
 
-        else:
+        if menu_tournoi == 2:
             Controller.menu_rapports()
             Controller.run()
+
+        if menu_tournoi == 3:
+            Controller.modification_elo_joueur()
+
+    @classmethod
+    def modification_elo_joueur(cls):
+        Controller.list_elo_joueur()
+        Vues.classement_elo_joueur()
+
+    @classmethod
+    def list_elo_joueur(cls):
+        db = TinyDB('db.json')
+        player = db.table("players").all()
+        df = pd.DataFrame(player)
+        list_player = []
+        players = df["joueur"]
+        for deserializ in players:
+            deserialize_players = Joueur.deserialize(deserializ)
+            list_player.append(deserialize_players)
+        result = sorted(list_player, key=lambda x: int(x.elo), reverse=True)
+        Vues.affiche_console(Vues.list_joueurs_elo(result))
+
 
     @classmethod
     def next_round(cls):
@@ -67,6 +89,18 @@ class Controller:
         if result_menu == 2:
             tournoi = cls.tournoi
             tournoi.generer_ronde()
+
+    @classmethod
+    def affiche_list_joueurs(cls):
+        db = TinyDB('db.json')
+        player = db.table("players").all()
+        df = pd.DataFrame(player).drop("score", axis=1)
+        list_player = []
+        players = df["joueur"]
+        for deserializ in players:
+            deserialize_players = Joueur.deserialize(deserializ)
+            list_player.append(deserialize_players)
+        Vues.affiche_console(Vues.rapport_list_joueurs(list_player))
 
     @classmethod
     def affiche_classement_aphab_joueurs(cls):
@@ -135,10 +169,15 @@ class Controller:
                 Vues.affiche_console(Vues.erreur_rapport())
         elif resultat == 3:
             try:
-                cls.affiche_classement_aphab_joueurs()
+                Controller.affiche_list_joueurs()
             except KeyError as e:
                 Vues.affiche_console(Vues.erreur_rapport())
         elif resultat == 4:
+            try:
+                cls.affiche_classement_aphab_joueurs()
+            except KeyError as e:
+                Vues.affiche_console(Vues.erreur_rapport())
+        elif resultat == 5:
             try:
                 cls.affiche_classement_joueurs()
             except KeyError as e:

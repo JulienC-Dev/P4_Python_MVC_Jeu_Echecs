@@ -10,11 +10,12 @@ class Vues:
     def debut_round(self, date):
         return print(f'"Début de la Ronde le {date}"')
 
-    def modification_classement_joueur(self):
+    @classmethod
+    def classement_elo_joueur(self):
         joueur_modif = int(input("indiquez le rang du joueur à modifier : "))
-        new_rang = int(input("indiquez le nouveau rang du joueur : "))
-        print("voici le nouveau classement : ")
-        return joueur_modif, new_rang
+        new_elo = int(input("indiquez l'elo du nouveau joueur : "))
+        print("Voici le nouveau classement par l'élo: ")
+        return joueur_modif, new_elo
 
     @classmethod
     def affiche_rond(cls, match0, match1):
@@ -46,23 +47,26 @@ class Vues:
 
     @classmethod
     def noms(cls):
-        return input("Entrez le nom des participants séparés par un virgule : ").strip().split(',')
+        return input("Entrez le nom des participants séparés par un virgule sans espace : ").strip().split(',')
 
     @classmethod
     def prenom(cls):
-        return input("Entrez le prenom des participants séparés par un virgule : ").strip().split(',')
+        return input("Entrez le prenom des participants séparés par un virgule sans espace : ").strip().split(',')
 
     @classmethod
     def date_naissances(cls):
-        return input("Entrez la date de naissance des participants séparés par un virgule : ").strip().split(',')
+        return input("Entrez la date de naissance des participants séparés par un virgule  "
+                     "sans espace: ").strip().split(',')
 
     @classmethod
     def sexes(cls):
-        return input("Entrez le sexe de chacun des participants séparés par un virgule : ").strip().split(',')
+        return input("Entrez le sexe de chacun des participants séparés par un virgule "
+                     "sans espace : ").strip().split(',')
 
     @classmethod
     def elos(cls):
-        return input("Entrez l'elo de chacun des participants séparés par un virgule : ").strip().split(',')
+        return input("Entrez l'elo de chacun des participants séparés par un virgule"
+                     " sans espace : ").strip().split(',')
 
     @classmethod
     def nom_premier_round(cls):
@@ -70,7 +74,7 @@ class Vues:
 
     @classmethod
     def terminer_round(cls):
-        return input("Avez vous terminé le round ? : tapez oui pour le sauvergarder ")
+        return input("Souhaitez-vous passer au round suivant ? : ")
 
     @classmethod
     def fin_tournoi(cls):
@@ -86,15 +90,28 @@ class Vues:
             print("Rang", count, value, " - points :", value.score)
 
     @classmethod
-    def modification_classement(cls):
-        print("Voulez vous modifier le classements des joueurs")
-        return str(input("tapez oui pour le modifier : "))
+    def affiche_classement_elo(cls, classement_elo):
+        for count, value in enumerate(classement_elo, start=1):
+            print("Rang", count, value, " - élo :", value.joueur.elo)
+
 
     @classmethod
     def rapport_ord_joueur(cls, classement_alphabetique):
         print("Rapport : Classement des joueurs par odre aphabétique ")
         for count, value in enumerate(classement_alphabetique, start=1):
             print("Rang", count, value, " - points :", value.score)
+
+    @classmethod
+    def rapport_list_joueurs(cls, list_players):
+        print("Liste des joueurs : ")
+        for count, value in enumerate(list_players, start=1):
+            print("Joueur", count, "-", value.prenom, value.nom)
+
+    @classmethod
+    def list_joueurs_elo(cls, list_players):
+        print("Voici le classements des joueurs par l'élo : ")
+        for count, value in enumerate(list_players, start=1):
+            print("Joueur", count, "-", value.prenom, value.nom, " - élo :", value.elo)
 
     @classmethod
     def rapport_tournoi_all(cls):
@@ -109,7 +126,8 @@ class Vues:
     @classmethod
     def menu_principal(cls):
         return float(input("Bienvenue\ntapez 1 si souhaitez-vous créer un tournoi \n"
-                           "tapez 2 si vous souhaitez consulter les rapports : "))
+                           "tapez 2 si vous souhaitez consulter les rapports \n"
+                           "tapez 3 si vous souhaitez modifier l'élo d'un joueur : "))
 
     @classmethod
     def retour_menu(cls):
@@ -121,8 +139,9 @@ class Vues:
         return float(input("Quel rapport souhaitez-vous ? \n"
                            "Tapez 1 pour afficher la liste de tous les tournois \n"
                            "Tapez 2 pour afficher la liste de tous les tours d'un tournoi \n"
-                           "Tapez 3 pour afficher la liste de joueurs triés par ordre aphabétique \n"
-                           "Tapez 4 pour afficher le classement des joueurs d'un tournoi: "))
+                           "Tapez 3 pour afficher la liste des joueurs \n"
+                           "Tapez 4 pour afficher la liste de joueurs triés par ordre aphabétique \n"
+                           "Tapez 5 pour afficher le classement des joueurs d'un tournoi: "))
 
     @classmethod
     def sauvergarder_match(cls):
@@ -130,7 +149,7 @@ class Vues:
 
     @classmethod
     def choix_tournoi(cls):
-        return int(input("Veuillez choisir le numéro du tournoi : "))
+        return int(input("Quel tournoi voulez vous voir : "))
 
     @classmethod
     def affiche_console(cls, affiche):

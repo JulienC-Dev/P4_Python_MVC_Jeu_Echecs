@@ -45,6 +45,19 @@ Générer un nouveau rapport flake8 :
 lancer l'application via la commande : python main.py
 L'utilisateur peut créer un tournoi et naviguer dans les rapports d'un tournoi
 
+1.3 - Jeu de données
+nom_tournoi = test
+lieu = paris
+date = 2020
+typejeu = bullet
+description = pas de remarque
+nb_rounds = 4
+noms = cormier,pernia,michet,valo,mitel,hal,mars,smith
+prenom = julien,jessica,hervé,alice,pierre,jacques,paul,albert
+date_naissances = 10/02/1990,11/01/1950,07/05/1987,10/06/1956,04/09/1995,08/11/2020,10/01/2020,29/12/1956
+sexes = masculin,feminin,masculin,masculin,masculin,masculin,masculin,masculin
+elos = 1, 42, 5, 22, 40, 10, 100, 150
+
 Version
 0.1
 

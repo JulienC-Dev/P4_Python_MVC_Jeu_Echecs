@@ -6,8 +6,11 @@ class Joueur:
         self.sexe = sexe
         self.elo = elo
 
+    def __str__(self):
+        return str(self.prenom) + " " + str(self.nom) + " " + str(self.elo)
+
     def __repr__(self):
-        return self.prenom
+        return str(self)
 
     def serialize(self) -> dict:
         serialized_player = {
@@ -15,7 +18,7 @@ class Joueur:
             'prenom': self.prenom,
             'date_naissance': self.date_naissance,
             'sexe': self.sexe,
-            'elo ': self.elo
+            'elo': self.elo
         }
         return serialized_player
 
