@@ -49,6 +49,13 @@ class Tournoi:
     #     vues = Vues()
     #     vues.affiche_classement_elo(classement)
 
+    # def modification_classement(self):
+    #     Vues.modification_classement()
+    #     vues = Vues()
+    #     vues.affiche_classement_elo(self.classement_elo())
+    #     modification_classement = vues.classement_elo_joueur()
+    #     self.modified_elo(modification_classement[0], modification_classement[1])
+
     def valid_pair(self, paire):
         for ronde in self.rondes:
             for match in ronde.matchs:
@@ -129,13 +136,6 @@ class Tournoi:
             vues.fin_round(ronde.date_fin)
             Vues.fin_tournoi()
             vues.affiche_classement(self.classement_score_elo())
-
-    # def modification_classement(self):
-    #     Vues.modification_classement()
-    #     vues = Vues()
-    #     vues.affiche_classement_elo(self.classement_elo())
-    #     modification_classement = vues.classement_elo_joueur()
-    #     self.modified_elo(modification_classement[0], modification_classement[1])
 
     def serialize_tour(self) -> dict:
         serialized_tournoi = {
