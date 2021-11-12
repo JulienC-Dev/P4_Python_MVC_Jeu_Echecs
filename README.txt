@@ -56,7 +56,7 @@ noms = cormier,pernia,michet,valo,mitel,hal,mars,smith
 prenom = julien,jessica,hervé,alice,pierre,jacques,paul,albert
 date_naissances = 10/02/1990,11/01/1950,07/05/1987,10/06/1956,04/09/1995,08/11/2020,10/01/2020,29/12/1956
 sexes = masculin,feminin,masculin,masculin,masculin,masculin,masculin,masculin
-elos = 1, 42, 5, 22, 40, 10, 100, 150
+elos = 1,42,5,22,40,10,100,150
 
 Version
 0.1

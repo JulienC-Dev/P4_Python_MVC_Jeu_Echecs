@@ -36,6 +36,16 @@ class Tournoi:
         result = sorted(self.all_participant, key=attrgetter('score', 'joueur.elo'), reverse=True)
         return result
 
+    @classmethod
+    def classement_ordre_alpha_joueur(cls, deserialize):
+        result = sorted(deserialize, key=lambda x: x.joueur.prenom.lower())
+        return result
+
+    @classmethod
+    def classement_rank_elo(cls, deserialize):
+        result = sorted(deserialize, key=attrgetter('score', 'joueur.elo'), reverse=True)
+        return result
+
     def list_ronde(self):
         list_rondes = self.rondes
         return list_rondes
@@ -147,15 +157,6 @@ class Tournoi:
             all_participant=[Participant.deserialize(p) for p in serialized.get("all_participants")]
         )
 
-    @classmethod
-    def classement_ordre_alpha_joueur(cls, deserialize):
-        result = sorted(deserialize, key=lambda x: x.joueur.prenom.lower())
-        return result
-
-    @classmethod
-    def classement_rank_elo(cls, deserialize):
-        result = sorted(deserialize, key=attrgetter('score', 'joueur.elo'), reverse=True)
-        return result
 
 
 if __name__ == '__main__':

@@ -90,12 +90,6 @@ class Vues:
             print("Rang", count, value, " - points :", value.score)
 
     @classmethod
-    def affiche_classement_elo(cls, classement_elo):
-        for count, value in enumerate(classement_elo, start=1):
-            print("Rang", count, value, " - élo :", value.joueur.elo)
-
-
-    @classmethod
     def rapport_ord_joueur(cls, classement_alphabetique):
         print("Rapport : Classement des joueurs par odre aphabétique ")
         for count, value in enumerate(classement_alphabetique, start=1):
@@ -150,6 +144,10 @@ class Vues:
     @classmethod
     def choix_tournoi(cls):
         return int(input("Quel tournoi voulez vous voir : "))
+
+    @classmethod
+    def classement_tournoi(cls):
+        return print("Voici le classement du tournoi : ")
 
     @classmethod
     def affiche_console(cls, affiche):
