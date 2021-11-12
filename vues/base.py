@@ -11,7 +11,7 @@ class Vues:
         return print(f'"Début de la Ronde le {date}"')
 
     @classmethod
-    def classement_elo_joueur(self):
+    def classement_elo_joueur(cls):
         joueur_modif = int(input("indiquez le rang du joueur à modifier : "))
         new_elo = int(input("indiquez l'elo du nouveau joueur : "))
         print("Voici le nouveau classement par l'élo: ")
@@ -82,7 +82,7 @@ class Vues:
 
     @classmethod
     def fin_round(cls, date):
-        return print(f'"Fin de la  Ronde le  {date}"')
+        return print(f'"Fin du tour le  {date}"')
 
     @classmethod
     def affiche_classement(cls, classement_score_elo):

@@ -7,7 +7,7 @@ class Joueur:
         self.elo = elo
 
     def __str__(self):
-        return str(self.prenom) + " " + str(self.nom) + " " + str(self.elo)
+        return str(self.prenom) + " " + str(self.nom)
 
     def __repr__(self):
         return str(self)

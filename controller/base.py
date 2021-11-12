@@ -60,11 +60,34 @@ class Controller:
 
         if menu_tournoi == 3:
             Controller.modification_elo_joueur()
+            Controller.run()
 
     @classmethod
     def modification_elo_joueur(cls):
-        Controller.list_elo_joueur()
-        Vues.classement_elo_joueur()
+        try:
+            Controller.list_elo_joueur()
+            modification_elo = Vues.classement_elo_joueur()
+            db = TinyDB('db.json')
+            players = db.table("players").all()
+            list_player = []
+            for deserializ in players:
+                deserialize_players = Participant.deserialize(deserializ)
+                list_player.append(deserialize_players)
+            result = sorted(list_player, key=lambda x: int(x.joueur.elo), reverse=True)
+            pos_joueur = modification_elo[0]
+            new_elo = modification_elo[1]
+            pos_joueur -= 1
+            player = result[pos_joueur]
+            player.joueur.elo = new_elo
+            result = sorted(list_player, key=lambda x: int(x.joueur.elo), reverse=True)
+            serialized_players = [p.serialize() for p in result]
+            players_table = db.table("players")
+            players_table.truncate()
+            players_table.insert_multiple(serialized_players)
+            Controller.list_elo_joueur()
+
+        except KeyError as e:
+            Vues.affiche_console(Vues.erreur_rapport())
 
     @classmethod
     def list_elo_joueur(cls):
@@ -78,7 +101,6 @@ class Controller:
             list_player.append(deserialize_players)
         result = sorted(list_player, key=lambda x: int(x.elo), reverse=True)
         Vues.affiche_console(Vues.list_joueurs_elo(result))
-
 
     @classmethod
     def next_round(cls):

@@ -9,8 +9,7 @@ class Participant:
         self.score = score
 
     def __repr__(self):
-        return self.joueur.prenom + ' ' + self.joueur.nom + ' ' + str(self.joueur.elo)
-
+        return self.joueur.prenom + ' ' + self.joueur.nom
 
     def win(self):
         self.score += 1

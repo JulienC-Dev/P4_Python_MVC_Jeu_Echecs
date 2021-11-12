@@ -40,22 +40,6 @@ class Tournoi:
         list_rondes = self.rondes
         return list_rondes
 
-    # def modified_elo(self, pos_joueur, new_elo):
-    #     pos_joueur -= 1
-    #     player = self.classement_elo()[pos_joueur]
-    #     player.joueur.elo.strip()
-    #     player.joueur.elo = new_elo
-    #     classement = self.classement_elo()
-    #     vues = Vues()
-    #     vues.affiche_classement_elo(classement)
-
-    # def modification_classement(self):
-    #     Vues.modification_classement()
-    #     vues = Vues()
-    #     vues.affiche_classement_elo(self.classement_elo())
-    #     modification_classement = vues.classement_elo_joueur()
-    #     self.modified_elo(modification_classement[0], modification_classement[1])
-
     def valid_pair(self, paire):
         for ronde in self.rondes:
             for match in ronde.matchs:
